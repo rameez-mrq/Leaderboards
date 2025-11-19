@@ -205,6 +205,16 @@ create table leaderboard (
 | `SUPABASE_ANON_KEY` | Public anon key (used server-side for read queries) |
 | `LEADERBOARD_API_TOKEN` | Shared secret that student workflows send in the `Authorization: Bearer ...` header |
 
+**⚠️ Important:** After setting environment variables, make sure to **disable Vercel Deployment Protection** for your API routes:
+
+1. Go to your Vercel project → **Settings** → **Deployment Protection**
+2. Either:
+   - **Disable Deployment Protection** entirely (recommended for public APIs), or
+   - Configure it to **bypass protection for `/api/*` routes**
+3. Redeploy your project
+
+Without this, all API requests will be blocked by Vercel's authentication layer before reaching your code.
+
 ### 3. Student workflow snippet
 
 Add this step after metrics are generated (replace the env values per repo):
