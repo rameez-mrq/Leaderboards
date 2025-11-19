@@ -36,7 +36,7 @@ Before running the evaluation, ensure your repository has these files and direct
     - \`fr94dtd\`
     - \`ftdtd\`
     - \`latimesdtd.dtd\`
-  - 📥 [Download Assignment Two dataset](YOUR_DOWNLOAD_LINK/Assignment-Two.zip) (large file, ~XXX MB)
+  - 📥 [Download Assignment Two dataset](https://drive.google.com/file/d/17HXFUsKifeCoSobvfgQuNv6ctPz6K0z9/view?usp=sharing)
 
 > 💡 **Tip:** After downloading, extract the \`Assignment Two\` directory to your repository root. For other files, place them in the exact locations shown in the [File Structure Reference](#-file-structure-reference) section below.
 
