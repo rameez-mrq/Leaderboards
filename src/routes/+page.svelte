@@ -21,7 +21,10 @@
 
 <main class="page">
 	<div class="leaderboard-container">
-		<h1>CS7IS3 Search Engine Leaderboard</h1>
+		<div class="header-section">
+			<h1>CS7IS3 Search Engine Leaderboard</h1>
+			<a href="/guide" class="guide-link">📖 Student Guide</a>
+		</div>
 		<table>
 			<thead>
 				<tr>
@@ -85,12 +88,47 @@
 		overflow-x: auto;
 	}
 
+	.header-section {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		margin-bottom: 1.5rem;
+		gap: 1rem;
+	}
+
 	h1 {
-		margin: 0 0 1.5rem;
+		margin: 0;
 		font-size: 1.75rem;
 		text-align: center;
 		color: #0f172a;
 		font-weight: 700;
+		grid-column: 2;
+	}
+
+	.guide-link {
+		grid-column: 3;
+		justify-self: end;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.625rem 1.25rem;
+		background: #6366f1;
+		color: #fff;
+		text-decoration: none;
+		border-radius: 8px;
+		font-weight: 500;
+		font-size: 0.9375rem;
+		transition: background-color 0.2s, transform 0.1s;
+		white-space: nowrap;
+	}
+
+	.guide-link:hover {
+		background: #4f46e5;
+		transform: translateY(-1px);
+	}
+
+	.guide-link:active {
+		transform: translateY(0);
 	}
 
 	table {
@@ -257,9 +295,12 @@
 			padding: 2rem;
 		}
 
+		.header-section {
+			margin-bottom: 2rem;
+		}
+
 		h1 {
 			font-size: 2rem;
-			margin-bottom: 2rem;
 		}
 
 		th {
@@ -295,6 +336,10 @@
 	@media (min-width: 1024px) {
 		.leaderboard-container {
 			padding: 2.5rem;
+		}
+
+		.header-section {
+			margin-bottom: 2rem;
 		}
 
 		h1 {
@@ -333,9 +378,21 @@
 			overflow-x: auto;
 		}
 
+		.header-section {
+			grid-template-columns: 1fr;
+			margin-bottom: 1.25rem;
+		}
+
 		h1 {
 			font-size: 1.5rem;
-			margin-bottom: 1.25rem;
+			grid-column: 1;
+		}
+
+		.guide-link {
+			grid-column: 1;
+			justify-self: center;
+			width: 100%;
+			justify-content: center;
 		}
 
 		th,

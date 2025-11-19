@@ -4,18 +4,23 @@ This guide shows you how to run the evaluation workflow and automatically submit
 
 ## 📋 Required Files
 
-Before running the evaluation, ensure your repository has these files and directories:
+Before running the evaluation, ensure your repository has these files and directories. You can download them from the links below:
 
 ### Required Files (Root Directory):
 - ✅ `pom.xml` - Maven project configuration
+  - 📥 [Download pom.xml](https://drive.google.com/file/d/1f3X7Q5PtiDjbemFU3Hv4heeMsrLEAZVC/view?usp=drive_link)
 - ✅ `topics` - Search topics file
+  - 📥 [Download topics](https://drive.google.com/file/d/13FB15WEDbGO_cP1x9ule_pFZYqkbLYqp/view?usp=drive_link)
 - ✅ `qrels.assignment2.part1` - Relevance judgments for evaluation
+  - 📥 [Download qrels.assignment2.part1](https://drive.google.com/file/d/1PzOTutqdPd4gwz37RyLjtSD64pN7mHDB/view?usp=drive_link)
 
 ### Required Files (Tools Directory):
 - ✅ `tools/evaluate.py` - Python script for evaluating search results
+  - 📥 [Download evaluate.py](https://drive.google.com/file/d/1uCiJTSSP52dhOJsAnw9X2BTJEY6fOLZA/view?usp=drive_link)
 
 ### Required Files (GitHub Workflow):
 - ✅ `.github/workflows/evaluation.yml` - Evaluation workflow file
+  - 📥 [Download evaluation.yml](https://drive.google.com/file/d/16-fZZqy-U6F8zzkJhuvafD6AJ6mhKaWZ/view?usp=drive_link)
 
 ### Required Directory:
 - ✅ `Assignment Two/` - Dataset directory containing:
@@ -28,6 +33,9 @@ Before running the evaluation, ensure your repository has these files and direct
     - `fr94dtd`
     - `ftdtd`
     - `latimesdtd.dtd`
+  - 📥 [Download Assignment Two dataset](https://drive.google.com/file/d/17HXFUsKifeCoSobvfgQuNv6ctPz6K0z9/view?usp=sharing)
+
+> 💡 **Tip:** After downloading, extract the `Assignment Two` directory to your repository root. For other files, place them in the exact locations shown in the [File Structure Reference](#-file-structure-reference) section below.
 
 ### Your Java Source Code:
 - ✅ `src/main/java/App.java`
@@ -165,12 +173,11 @@ Your leaderboard entry **automatically updates** with the latest scores. No extr
 **Check:**
 1. Did "Submit metrics to leaderboard" step succeed? (✅ green checkmark)
 2. Wait 10-30 seconds and refresh the leaderboard page
-3. Verify secrets are correct (ask instructor if unsure)
+3. Verify secrets are correct
 
 **If still not working:**
 - Check workflow logs for error messages
 - Verify API URL in secrets matches: `https://leaderboard.qrameez.in`
-- Contact instructor with workflow run number
 
 ## 📚 File Structure Reference
 
