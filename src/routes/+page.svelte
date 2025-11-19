@@ -35,14 +35,21 @@
 			</thead>
 			<tbody>
 				{#each leaderboard as student (student.id)}
-					<tr class:first-place={student.rank === 1}>
-						<td class="rank">#{student.rank}</td>
+					<tr 
+						class:first-place={student.rank === 1}
+						class:second-place={student.rank === 2}
+						class:third-place={student.rank === 3}
+					>
+						<td class="rank">
+							{#if student.rank === 1}
+								<span class="crown">👑</span>
+							{:else}
+								#{student.rank}
+							{/if}
+						</td>
 						<td class="team">
 							{#if student.rank === 1}
-								<div class="crown-wrapper">
-									<span class="crown">👑</span>
-									<span class="team-name">{student.team}</span>
-								</div>
+								<span class="team-name">{student.team}</span>
 							{:else}
 								{student.team}
 							{/if}
@@ -97,7 +104,7 @@
 	}
 
 	th {
-		text-align: left;
+		text-align: center;
 		padding: 0.75rem 0.875rem;
 		font-weight: 600;
 		color: #475569;
@@ -110,7 +117,8 @@
 	td {
 		padding: 0.875rem;
 		border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-		font-size: 0.875rem;
+		font-size: 1rem;
+		text-align: center;
 	}
 
 	tbody tr:hover {
@@ -126,17 +134,37 @@
 		background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 223, 0, 0.16) 100%);
 	}
 
-	.crown-wrapper {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.25rem;
+	tbody tr.second-place {
+		background: linear-gradient(135deg, rgba(192, 192, 192, 0.08) 0%, rgba(211, 211, 211, 0.12) 100%);
+		border-left: 3px solid #c0c0c0;
+	}
+
+	tbody tr.second-place:hover {
+		background: linear-gradient(135deg, rgba(192, 192, 192, 0.12) 0%, rgba(211, 211, 211, 0.16) 100%);
+	}
+
+	tbody tr.third-place {
+		background: linear-gradient(135deg, rgba(205, 127, 50, 0.08) 0%, rgba(184, 115, 51, 0.12) 100%);
+		border-left: 3px solid #cd7f32;
+	}
+
+	tbody tr.third-place:hover {
+		background: linear-gradient(135deg, rgba(205, 127, 50, 0.12) 0%, rgba(184, 115, 51, 0.16) 100%);
+	}
+
+	tbody tr.first-place td,
+	tbody tr.second-place td,
+	tbody tr.third-place td {
+		font-size: 1.125rem;
+		font-weight: 600;
 	}
 
 	.crown {
 		font-size: 1.5rem;
 		line-height: 1;
 		animation: bounce 2s infinite;
+		display: inline-block;
+		vertical-align: middle;
 	}
 
 	@keyframes bounce {
@@ -149,27 +177,29 @@
 	}
 
 	.team-name {
-		font-weight: 600;
-		font-size: 1.125rem;
-		color: #0f172a;
+		display: inline-block;
+		vertical-align: middle;
 	}
 
 	tbody tr.first-place .rank {
-		font-size: 1.125rem;
 		font-weight: 700;
 		color: #ffd700;
 	}
 
-	tbody tr.first-place .name {
-		font-size: 1rem;
-		font-weight: 600;
-		color: #0f172a;
+	tbody tr.second-place .rank {
+		font-weight: 700;
+		color: #c0c0c0;
 	}
 
-	tbody tr.first-place .score {
-		font-size: 1.125rem;
+	tbody tr.third-place .rank {
 		font-weight: 700;
-		color: #0f172a;
+		color: #cd7f32;
+	}
+
+	tbody tr.first-place .score,
+	tbody tr.second-place .score,
+	tbody tr.third-place .score {
+		font-weight: 700;
 	}
 
 	.rank {
@@ -177,32 +207,34 @@
 		color: #6366f1;
 		text-align: center;
 		width: 60px;
-		font-size: 0.875rem;
+		font-size: 1rem;
 	}
 
 	.team {
 		font-weight: 500;
-		color: #64748b;
-		font-size: 0.875rem;
+		color: #0f172a;
+		font-size: 1rem;
 		max-width: 150px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		text-align: center;
 	}
 
 	.name {
 		font-weight: 500;
-		color: #0f172a;
-		font-size: 0.875rem;
+		color: #64748b;
+		font-size: 1rem;
 		max-width: 200px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		text-align: center;
 	}
 
 	.score {
 		font-weight: 600;
-		font-size: 0.9375rem;
+		font-size: 1.0625rem;
 		color: #0f172a;
 		text-align: center;
 		white-space: nowrap;
@@ -210,8 +242,9 @@
 
 	.commit {
 		color: #64748b;
-		font-size: 0.8125rem;
+		font-size: 0.9375rem;
 		white-space: nowrap;
+		text-align: center;
 	}
 
 	/* Tablet */
@@ -236,28 +269,25 @@
 
 		td {
 			padding: 1rem;
-			font-size: 0.9375rem;
+			font-size: 1.0625rem;
 		}
 
 		.rank {
-			font-size: 0.9375rem;
+			font-size: 1.0625rem;
 		}
 
 		.score {
-			font-size: 1rem;
+			font-size: 1.125rem;
 		}
 
-		tbody tr.first-place .team-name {
-			font-size: 1.25rem;
+		tbody tr.first-place td,
+		tbody tr.second-place td,
+		tbody tr.third-place td {
+			font-size: 1.125rem;
 		}
 
 		tbody tr.first-place .crown {
 			font-size: 1.75rem;
-		}
-
-		tbody tr.first-place .rank,
-		tbody tr.first-place .score {
-			font-size: 1.125rem;
 		}
 	}
 
@@ -278,25 +308,21 @@
 
 		td {
 			padding: 1.125rem 1.25rem;
-			font-size: 1rem;
-		}
-
-		.score {
 			font-size: 1.0625rem;
 		}
 
-		tbody tr.first-place .team-name {
-			font-size: 1.375rem;
+		.score {
+			font-size: 1.125rem;
+		}
+
+		tbody tr.first-place td,
+		tbody tr.second-place td,
+		tbody tr.third-place td {
+			font-size: 1.125rem;
 		}
 
 		tbody tr.first-place .crown {
 			font-size: 2rem;
-		}
-
-		tbody tr.first-place .rank,
-		tbody tr.first-place .name,
-		tbody tr.first-place .score {
-			font-size: 1.125rem;
 		}
 	}
 
@@ -315,7 +341,7 @@
 		th,
 		td {
 			padding: 0.625rem 0.5rem;
-			font-size: 0.8125rem;
+			font-size: 0.9375rem;
 		}
 
 		th {
@@ -324,7 +350,7 @@
 
 		.rank {
 			width: 50px;
-			font-size: 0.8125rem;
+			font-size: 0.9375rem;
 		}
 
 		.team {
@@ -336,25 +362,21 @@
 		}
 
 		.score {
-			font-size: 0.875rem;
+			font-size: 1rem;
 		}
 
 		.commit {
-			font-size: 0.75rem;
+			font-size: 0.875rem;
 		}
 
-		tbody tr.first-place .team-name {
-			font-size: 1rem;
+		tbody tr.first-place td,
+		tbody tr.second-place td,
+		tbody tr.third-place td {
+			font-size: 0.9375rem;
 		}
 
 		tbody tr.first-place .crown {
 			font-size: 1.375rem;
-		}
-
-		tbody tr.first-place .rank,
-		tbody tr.first-place .name,
-		tbody tr.first-place .score {
-			font-size: 0.9375rem;
 		}
 	}
 </style>
