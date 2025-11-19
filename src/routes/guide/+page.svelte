@@ -115,8 +115,6 @@ The evaluation calculates these metrics:
 
 - **MAP (Mean Average Precision)** - Primary ranking metric (0.0 to 1.0, higher is better)
 - **P@5** - Precision at 5 (fraction of top 5 results that are relevant)
-- **P@20** - Precision at 20 (fraction of top 20 results that are relevant)
-- **nDCG@20** - Normalized DCG at 20 (ranking quality considering position)
 
 **The leaderboard ranks by MAP score.**
 
@@ -258,8 +256,20 @@ If you have any questions or encounter issues, please contact:
 
 **Good luck with your search engine implementation! 🚀**`;
 
+	// Fix quotes in markdown source before parsing
+	const markdownWithQuotes = markdownContent
+		// Replace quotes in examples and text (preserve backticks and code blocks)
+		.replace(/([^`]|^)"([^"]+)"([^`]|$)/g, (match, before, content, after) => {
+			// Skip if inside code blocks or backticks
+			if (before === '`' || after === '`') return match;
+			return before + '\u201C' + content + '\u201D' + after;
+		})
+		// Handle quotes after e.g.,
+		.replace(/\(e\.g\.,\s*"([^"]+)"\)/g, '(e.g., \u201C$1\u201D)')
+		.replace(/\(e\.g\.,\s*"([^"]+)"\s*,\s*"([^"]+)"\)/g, '(e.g., \u201C$1\u201D, \u201C$2\u201D)');
+	
 	// Parse markdown and add target="_blank" to external links
-	const parsed = marked.parse(markdownContent);
+	const parsed = marked.parse(markdownWithQuotes);
 	let htmlContent = typeof parsed === 'string' ? parsed : String(parsed);
 	
 	// Add target="_blank" to all external links
@@ -267,11 +277,6 @@ If you have any questions or encounter issues, please contact:
 		/<a href="(https?:\/\/[^"]+)"/g,
 		'<a href="$1" target="_blank" rel="noopener noreferrer"'
 	);
-	
-	// Fix quotes: replace straight quotes with typographic quotes
-	htmlContent = htmlContent
-		.replace(/"([^"]+)"/g, '\u201C$1\u201D') // Opening and closing double quotes
-		.replace(/'([^']+)'/g, '\u2018$1\u2019'); // Opening and closing single quotes
 </script>
 
 <svelte:head>
