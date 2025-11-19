@@ -4,7 +4,7 @@
 # Usage: ./scripts/test-api.sh
 
 # Set these variables (or export them as environment variables)
-LEADERBOARD_API_URL="${LEADERBOARD_API_URL:-https://your-app.vercel.app}"
+LEADERBOARD_API_URL="${LEADERBOARD_API_URL:-https://leaderboard.qrameez.in}"
 LEADERBOARD_API_TOKEN="${LEADERBOARD_API_TOKEN:-your-token-here}"
 
 # Remove trailing slash from URL if present

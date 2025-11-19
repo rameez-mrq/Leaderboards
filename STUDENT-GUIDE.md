@@ -18,7 +18,7 @@ Before your evaluation can submit scores, you need to add two secrets to your re
 
 ### Secret 1: `LEADERBOARD_API_URL`
 - **Name:** `LEADERBOARD_API_URL`
-- **Value:** `https://your-leaderboard-app.vercel.app` (your instructor will provide this URL)
+- **Value:** `https://leaderboard.qrameez.in` (your instructor will provide this URL)
 - Click **Add secret**
 
 ### Secret 2: `LEADERBOARD_API_TOKEN`
@@ -139,7 +139,7 @@ The evaluation runs again and **automatically updates** your leaderboard entry w
 
 **If still not working:**
 - Check the workflow logs for error messages
-- Verify the API URL is correct (should be your Vercel app URL)
+- Verify the API URL is correct (should be `https://leaderboard.qrameez.in`)
 - Contact your instructor if the issue persists
 
 ### Evaluation runs but shows 0.0 scores
@@ -197,7 +197,7 @@ If you encounter issues:
 
 ## 🔗 Quick Reference
 
-- **Leaderboard URL:** (provided by instructor)
+- **Leaderboard URL:** `https://leaderboard.qrameez.in`
 - **Workflow File:** `.github/workflows/evaluation.yml`
 - **Secrets Location:** Settings → Secrets and variables → Actions
 - **Actions Tab:** `https://github.com/YOUR_USERNAME/YOUR_REPO/actions`

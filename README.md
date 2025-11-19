@@ -240,7 +240,7 @@ Add this step after metrics are generated (replace the env values per repo):
 ```
 
 Each student repo only needs:
-- `LEADERBOARD_API_URL` (e.g., `https://your-app.vercel.app`)
+- `LEADERBOARD_API_URL` (e.g., `https://leaderboard.qrameez.in`)
 - `LEADERBOARD_API_TOKEN` (shared secret you provide)
 
 No Supabase keys are shared with students.
