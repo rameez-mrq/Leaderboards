@@ -260,12 +260,18 @@ If you have any questions or encounter issues, please contact:
 
 	// Parse markdown and add target="_blank" to external links
 	const parsed = marked.parse(markdownContent);
-	const htmlContent = typeof parsed === 'string' 
-		? parsed.replace(
-			/<a href="(https?:\/\/[^"]+)"/g,
-			'<a href="$1" target="_blank" rel="noopener noreferrer"'
-		)
-		: parsed;
+	let htmlContent = typeof parsed === 'string' ? parsed : String(parsed);
+	
+	// Add target="_blank" to all external links
+	htmlContent = htmlContent.replace(
+		/<a href="(https?:\/\/[^"]+)"/g,
+		'<a href="$1" target="_blank" rel="noopener noreferrer"'
+	);
+	
+	// Fix quotes: replace straight quotes with typographic quotes
+	htmlContent = htmlContent
+		.replace(/"([^"]+)"/g, '\u201C$1\u201D') // Opening and closing double quotes
+		.replace(/'([^']+)'/g, '\u2018$1\u2019'); // Opening and closing single quotes
 </script>
 
 <svelte:head>
