@@ -1,0 +1,30 @@
+# Template workflow for student repositories
+# Students should add this to their repo's .github/workflows/notify-leaderboard.yml
+# This will notify the leaderboard when their evaluation completes
+
+name: Notify Leaderboard
+
+on:
+  workflow_run:
+    workflows: ["evaluation"]  # Change to match your evaluation workflow name
+    types:
+      - completed
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Trigger Leaderboard Update
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.LEADERBOARD_TOKEN }}  # Students need to add this secret
+          repository: YOUR_USERNAME/Leaderboards  # Change to your leaderboard repo
+          event-type: student-evaluation-complete
+          client-payload: |
+            {
+              "repo": "${{ github.repository }}",
+              "student": "${{ github.actor }}",
+              "run_id": "${{ github.event.workflow_run.id }}"
+            }
+

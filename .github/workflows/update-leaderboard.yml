@@ -1,0 +1,55 @@
+name: Update Leaderboard
+
+on:
+  workflow_dispatch:
+    inputs:
+      student_name:
+        description: 'Student Name'
+        required: true
+      team_name:
+        description: 'Team Name'
+        required: false
+      map_score:
+        description: 'MAP Score'
+        required: true
+      commit_time:
+        description: 'Last Commit Time'
+        required: false
+        default: 'Just now'
+  # Uncomment to auto-update on schedule or other events
+  # schedule:
+  #   - cron: '0 */6 * * *'  # Every 6 hours
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Update Leaderboard
+        run: |
+          node scripts/update-leaderboard.js \
+            --name "${{ github.event.inputs.student_name }}" \
+            --team "${{ github.event.inputs.team_name }}" \
+            --map "${{ github.event.inputs.map_score }}" \
+            --commit "${{ github.event.inputs.commit_time }}"
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add static/leaderboard.json
+          git diff --staged --quiet || git commit -m "Update leaderboard: ${{ github.event.inputs.student_name }}"
+          git push
+
+      - name: Trigger Pages Deployment
+        run: |
+          # This will trigger the deploy workflow
+          echo "Leaderboard updated, deployment will be triggered automatically"
+

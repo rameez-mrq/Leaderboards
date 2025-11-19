@@ -1,0 +1,50 @@
+name: Sync Student Results
+
+on:
+  # Run on a schedule (every 30 minutes)
+  schedule:
+    - cron: '*/30 * * * *'
+  
+  # Run manually
+  workflow_dispatch:
+  
+  # Run when student repos push (via repository_dispatch webhook)
+  repository_dispatch:
+    types: [student-evaluation-complete]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch Student Results
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/fetch-student-results.js
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add static/leaderboard.json
+          git diff --staged --quiet || git commit -m "Auto-update: Sync student results from GitHub Actions"
+          git push
+
+      - name: Trigger Deployment
+        run: |
+          echo "Leaderboard updated, deployment will be triggered automatically"
+

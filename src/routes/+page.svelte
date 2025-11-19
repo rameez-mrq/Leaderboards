@@ -7,52 +7,9 @@
 		lastCommit: string;
 	};
 
-	const students: Student[] = [
-		{
-			id: 1,
-			name: 'Avery Chen',
-			team: 'Team Lucene',
-			map: 0.34,
-			lastCommit: '2 hours ago'
-		},
-		{
-			id: 2,
-			name: 'Leo Martínez',
-			team: 'Query Rangers',
-			map: 0.31,
-			lastCommit: '5 hours ago'
-		},
-		{
-			id: 3,
-			name: 'Maya Patel',
-			team: 'Recall Crew',
-			map: 0.29,
-			lastCommit: '1 day ago'
-		},
-		{
-			id: 4,
-			name: 'Noah Kingsley',
-			team: 'LA Times Squad',
-			map: 0.25,
-			lastCommit: '2 days ago'
-		},
-		{
-			id: 5,
-			name: 'Isla Okafor',
-			team: 'FT Navigators',
-			map: 0.21,
-			lastCommit: '3 days ago'
-		},
-		{
-			id: 6,
-			name: 'Rin Nakamura',
-			team: 'FBIS Readers',
-			map: 0.2,
-			lastCommit: '4 days ago'
-		}
-	];
+	let { data } = $props<{ data: { students: Student[] } }>();
 
-	const leaderboard = [...students]
+	const leaderboard = [...data.students]
 		.sort((a, b) => b.map - a.map)
 		.map((student, index) => ({ ...student, rank: index + 1 }));
 </script>

@@ -1,0 +1,51 @@
+[
+	{
+		"id": 1,
+		"name": "Avery Chen",
+		"team": "Team Lucene",
+		"repo": "username/repo-name",
+		"workflowName": "evaluation.yml",
+		"resultsFile": "results/metrics.json"
+	},
+	{
+		"id": 2,
+		"name": "Leo Martínez",
+		"team": "Query Rangers",
+		"repo": "username/repo-name",
+		"workflowName": "evaluation.yml",
+		"resultsFile": "results/metrics.json"
+	},
+	{
+		"id": 3,
+		"name": "Maya Patel",
+		"team": "Recall Crew",
+		"repo": "username/repo-name",
+		"workflowName": "evaluation.yml",
+		"resultsFile": "results/metrics.json"
+	},
+	{
+		"id": 4,
+		"name": "Noah Kingsley",
+		"team": "LA Times Squad",
+		"repo": "username/repo-name",
+		"workflowName": "evaluation.yml",
+		"resultsFile": "results/metrics.json"
+	},
+	{
+		"id": 5,
+		"name": "Isla Okafor",
+		"team": "FT Navigators",
+		"repo": "username/repo-name",
+		"workflowName": "evaluation.yml",
+		"resultsFile": "results/metrics.json"
+	},
+	{
+		"id": 6,
+		"name": "Rin Nakamura",
+		"team": "FBIS Readers",
+		"repo": "username/repo-name",
+		"workflowName": "evaluation.yml",
+		"resultsFile": "results/metrics.json"
+	}
+]
+
