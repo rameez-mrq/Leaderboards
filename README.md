@@ -2,6 +2,16 @@
 
 A modern leaderboard application built with SvelteKit to display student MAP scores for the CS7IS3 Search Engine assignment.
 
+## 📚 For Students
+
+**👉 [See STUDENT-GUIDE.md](./STUDENT-GUIDE.md) for complete instructions on:**
+- Setting up GitHub secrets for leaderboard submission
+- Running the evaluation workflow
+- Understanding how scores are automatically submitted
+- Troubleshooting common issues
+
+The guide covers everything you need to get your scores on the leaderboard!
+
 ## Development
 
 ```sh

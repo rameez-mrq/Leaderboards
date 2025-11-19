@@ -9,6 +9,26 @@ type LeaderboardRow = {
 	last_commit: string | null;
 };
 
+const formatRelativeTime = (isoString: string | null) => {
+	if (!isoString) return '—';
+
+	const timestamp = Date.parse(isoString);
+	if (Number.isNaN(timestamp)) {
+		return isoString;
+	}
+
+	const diffMs = Date.now() - timestamp;
+	const diffSeconds = Math.floor(diffMs / 1000);
+	const diffMinutes = Math.floor(diffSeconds / 60);
+	const diffHours = Math.floor(diffMinutes / 60);
+	const diffDays = Math.floor(diffHours / 24);
+
+	if (diffSeconds < 60) return 'Just now';
+	if (diffMinutes < 60) return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
+	if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+	return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+};
+
 export const load: PageServerLoad = async () => {
 	const { data, error } = await supabaseServerClient
 		.from('leaderboard')
@@ -27,7 +47,7 @@ export const load: PageServerLoad = async () => {
 		name: entry.student_name ?? entry.student_id ?? `Student ${index + 1}`,
 		team: entry.team ?? 'Unassigned',
 		map: entry.map_score ?? 0,
-		lastCommit: entry.last_commit ?? '—'
+		lastCommit: formatRelativeTime(entry.last_commit)
 	}));
 
 	return { students };
