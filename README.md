@@ -187,6 +187,7 @@ create table leaderboard (
   student_name text,
   team text,
   map_score double precision,
+  p5 double precision,
   p20 double precision,
   ndcg20 double precision,
   run_id text,

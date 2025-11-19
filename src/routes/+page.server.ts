@@ -6,6 +6,7 @@ type LeaderboardRow = {
 	student_name: string | null;
 	team: string | null;
 	map_score: number | null;
+	p5: number | null;
 	last_commit: string | null;
 };
 
@@ -44,9 +45,10 @@ export const load: PageServerLoad = async () => {
 
 	const students = rows.map((entry, index) => ({
 		id: entry.student_id ?? index + 1,
-		name: entry.student_name ?? entry.student_id ?? `Student ${index + 1}`,
+		name: entry.student_name ?? entry.student_id ?? `Team ${index + 1}`,
 		team: entry.team ?? 'Unassigned',
 		map: entry.map_score ?? 0,
+		p5: entry.p5 ?? 0,
 		lastCommit: formatRelativeTime(entry.last_commit)
 	}));
 

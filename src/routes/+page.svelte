@@ -4,6 +4,7 @@
 		name: string;
 		team: string;
 		map: number;
+		p5: number;
 		lastCommit: string;
 	};
 
@@ -26,8 +27,9 @@
 				<tr>
 					<th>Rank</th>
 					<th>Team</th>
-					<th>Student</th>
-					<th>MAP Score</th>
+					<th>Members</th>
+					<th>MAP</th>
+					<th>P@5</th>
 					<th>Last Commit</th>
 				</tr>
 			</thead>
@@ -38,6 +40,7 @@
 						<td class="team">{student.team}</td>
 						<td class="name">{student.name}</td>
 						<td class="score">{student.map.toFixed(2)}</td>
+						<td class="score">{student.p5.toFixed(2)}</td>
 						<td class="commit">{student.lastCommit}</td>
 					</tr>
 				{/each}
@@ -52,22 +55,23 @@
 		display: flex;
 		align-items: flex-start;
 		justify-content: center;
-		padding: 3rem 1.5rem;
+		padding: 1.5rem 1rem;
 	}
 
 	.leaderboard-container {
 		width: 100%;
-		max-width: 1200px;
+		max-width: 1400px;
 		background: #fff;
-		border-radius: 16px;
-		padding: 3rem;
+		border-radius: 12px;
+		padding: 1.5rem;
 		box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
 		border: 1px solid rgba(15, 23, 42, 0.08);
+		overflow-x: auto;
 	}
 
 	h1 {
-		margin: 0 0 2.5rem;
-		font-size: 2.5rem;
+		margin: 0 0 1.5rem;
+		font-size: 1.75rem;
 		text-align: center;
 		color: #0f172a;
 		font-weight: 700;
@@ -76,6 +80,7 @@
 	table {
 		width: 100%;
 		border-collapse: collapse;
+		min-width: 600px;
 	}
 
 	thead {
@@ -84,18 +89,19 @@
 
 	th {
 		text-align: left;
-		padding: 1.25rem 1.5rem;
+		padding: 0.75rem 0.875rem;
 		font-weight: 600;
 		color: #475569;
-		font-size: 1.1rem;
+		font-size: 0.75rem;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
+		white-space: nowrap;
 	}
 
 	td {
-		padding: 1.5rem 1.5rem;
+		padding: 0.875rem;
 		border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-		font-size: 1.1rem;
+		font-size: 0.875rem;
 	}
 
 	tbody tr:hover {
@@ -106,59 +112,144 @@
 		font-weight: 600;
 		color: #6366f1;
 		text-align: center;
-		width: 80px;
-		font-size: 1.2rem;
+		width: 60px;
+		font-size: 0.875rem;
 	}
 
 	.team {
 		font-weight: 500;
 		color: #64748b;
-		font-size: 1.1rem;
+		font-size: 0.875rem;
+		max-width: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.name {
-		font-weight: 600;
+		font-weight: 500;
 		color: #0f172a;
-		font-size: 1.15rem;
+		font-size: 0.875rem;
+		max-width: 200px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.score {
 		font-weight: 600;
-		font-size: 1.4rem;
+		font-size: 0.9375rem;
 		color: #0f172a;
+		text-align: right;
+		white-space: nowrap;
 	}
 
 	.commit {
 		color: #64748b;
-		font-size: 1rem;
+		font-size: 0.8125rem;
+		white-space: nowrap;
 	}
 
-	@media (max-width: 640px) {
+	/* Tablet */
+	@media (min-width: 768px) {
 		.page {
-			padding: 1.5rem 1rem;
+			padding: 2rem 1.5rem;
 		}
 
 		.leaderboard-container {
-			padding: 1.5rem;
+			padding: 2rem;
 		}
 
 		h1 {
-			font-size: 1.75rem;
-			margin-bottom: 1.5rem;
+			font-size: 2rem;
+			margin-bottom: 2rem;
+		}
+
+		th {
+			padding: 1rem;
+			font-size: 0.8125rem;
+		}
+
+		td {
+			padding: 1rem;
+			font-size: 0.9375rem;
+		}
+
+		.rank {
+			font-size: 0.9375rem;
+		}
+
+		.score {
+			font-size: 1rem;
+		}
+	}
+
+	/* Desktop */
+	@media (min-width: 1024px) {
+		.leaderboard-container {
+			padding: 2.5rem;
+		}
+
+		h1 {
+			font-size: 2.25rem;
+		}
+
+		th {
+			padding: 1.125rem 1.25rem;
+			font-size: 0.875rem;
+		}
+
+		td {
+			padding: 1.125rem 1.25rem;
+			font-size: 1rem;
+		}
+
+		.score {
+			font-size: 1.0625rem;
+		}
+	}
+
+	/* Mobile - make table scrollable */
+	@media (max-width: 767px) {
+		.leaderboard-container {
+			padding: 1rem;
+			overflow-x: auto;
+		}
+
+		h1 {
+			font-size: 1.5rem;
+			margin-bottom: 1.25rem;
 		}
 
 		th,
 		td {
-			padding: 0.75rem 0.5rem;
-			font-size: 0.9rem;
+			padding: 0.625rem 0.5rem;
+			font-size: 0.8125rem;
 		}
 
 		th {
-			font-size: 0.85rem;
+			font-size: 0.75rem;
+		}
+
+		.rank {
+			width: 50px;
+			font-size: 0.8125rem;
+		}
+
+		.team {
+			max-width: 120px;
+		}
+
+		.name {
+			max-width: 150px;
 		}
 
 		.score {
-			font-size: 1.1rem;
+			font-size: 0.875rem;
+		}
+
+		.commit {
+			font-size: 0.75rem;
 		}
 	}
 </style>

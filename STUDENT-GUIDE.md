@@ -1,208 +1,242 @@
-# CS7IS3 Assignment 2 - Evaluation & Leaderboard Submission Guide
+# CS7IS3 Assignment 2 - Evaluation & Leaderboard Guide
 
-This guide explains how to run the evaluation workflow and automatically submit your MAP scores to the leaderboard.
+This guide shows you how to run the evaluation workflow and automatically submit your MAP scores to the leaderboard.
 
-## 📋 Prerequisites
+## 📋 Required Files
 
-- Your search engine implementation is complete (`App.java`, `Indexer.java`, `Searcher.java`)
-- Your repository has the evaluation workflow (`.github/workflows/evaluation.yml`)
-- You have access to your repository's Settings page
+Before running the evaluation, ensure your repository has these files and directories:
 
-## 🔐 Step 1: Add Leaderboard API Secrets
+### Required Files (Root Directory):
+- ✅ `pom.xml` - Maven project configuration
+- ✅ `topics` - Search topics file
+- ✅ `qrels.assignment2.part1` - Relevance judgments for evaluation
 
-Before your evaluation can submit scores, you need to add two secrets to your repository:
+### Required Files (Tools Directory):
+- ✅ `tools/evaluate.py` - Python script for evaluating search results
 
-1. **Go to your repository on GitHub**
-2. **Navigate to Settings → Secrets and variables → Actions**
-3. **Click "New repository secret"** and add the following:
+### Required Files (GitHub Workflow):
+- ✅ `.github/workflows/evaluation.yml` - Evaluation workflow file
 
-### Secret 1: `LEADERBOARD_API_URL`
-- **Name:** `LEADERBOARD_API_URL`
-- **Value:** `https://leaderboard.qrameez.in` (your instructor will provide this URL)
-- Click **Add secret**
+### Required Directory:
+- ✅ `Assignment Two/` - Dataset directory containing:
+  - `fbis/` - FBIS documents
+  - `fr94/` - Federal Register documents (subdirectories 01-12)
+  - `ft/` - Financial Times documents (subdirectories ft911-ft944)
+  - `latimes/` - LA Times documents
+  - `dtds/` - DTD files for document parsing
+    - `fbisdtd.dtd`
+    - `fr94dtd`
+    - `ftdtd`
+    - `latimesdtd.dtd`
 
-### Secret 2: `LEADERBOARD_API_TOKEN`
-- **Name:** `LEADERBOARD_API_TOKEN`
-- **Value:** (your instructor will provide this token)
-- Click **Add secret**
+### Your Java Source Code:
+- ✅ `src/main/java/App.java`
+- ✅ `src/main/java/Indexer.java`
+- ✅ `src/main/java/Searcher.java`
 
-> ⚠️ **Important:** Keep these secrets private. Never commit them to your code or share them publicly.
+### Required for leaderboard submission:
+- GitHub Secrets: `LEADERBOARD_API_URL` and `LEADERBOARD_API_TOKEN`
+- Optional: `TEAM_NAME` - Your team name (if not set, repository name will be used)
+- Optional: `TEAM_MEMBERS` - Names of team members, comma-separated (e.g., "John Doe, Jane Smith")
 
-## 🚀 Step 2: Run the Evaluation Workflow
+## 🚀 Quick Start
 
-The evaluation workflow runs automatically when you push code to your repository. Here's what happens:
+### Step 1: Configure GitHub Secrets (One-time setup)
 
-### Automatic Trigger
-- **Push to any branch** → Workflow runs automatically
-- **Create a Pull Request** → Workflow runs automatically
+To submit scores to the leaderboard, add these secrets to your repository:
 
-### Manual Trigger (Optional)
-1. Go to your repository's **Actions** tab
-2. Select **"CS7IS3 Assignment 2 - Search Engine Evaluation"** workflow
-3. Click **"Run workflow"** → **"Run workflow"** (green button)
+1. Go to your repository → **Settings** → **Secrets and variables** → **Actions**
+2. Click **"New repository secret"** and add:
 
-## 📊 What the Workflow Does
+   **Secret 1:**
+   - **Name:** `LEADERBOARD_API_URL`
+   - **Value:** `https://leaderboard.qrameez.in`
+   
+   **Secret 2:**
+   - **Name:** `LEADERBOARD_API_TOKEN`
+   - **Value:** (provided by your instructor)
+   
+   **Secret 3 (Optional):**
+   - **Name:** `TEAM_NAME`
+   - **Value:** Your team name (e.g., "Team Lucene", "Query Rangers")
+   - If not set, your repository name will be used as the team name
+   
+   **Secret 4 (Optional):**
+   - **Name:** `TEAM_MEMBERS`
+   - **Value:** Names of team members, comma-separated (e.g., "John Doe, Jane Smith, Bob Johnson")
+   - If not set, your GitHub username will be used
 
-The evaluation workflow performs these steps:
+> ⚠️ **Note:** Without `LEADERBOARD_API_URL` and `LEADERBOARD_API_TOKEN`, the evaluation will still run but won't submit to the leaderboard.
 
-1. **✅ Validates Project Structure**
-   - Checks for `pom.xml`, Java source code, `topics` file, and dataset directory
+### Step 2: Run the Evaluation
 
-2. **🔨 Builds Your Project**
-   - Runs `mvn clean package` to compile your search engine
+The evaluation runs automatically when you **push code** to your repository. You can also trigger it manually:
 
-3. **📚 Indexes Documents**
-   - Executes: `java -jar target/cs7is3-search-1.0.0.jar index --docs "Assignment Two" --index index`
-   - Creates a Lucene index from the dataset
+1. Go to **Actions** tab
+2. Select **"CS7IS3 Assignment 2 - Search Engine Evaluation"**
+3. Click **"Run workflow"** → **"Run workflow"**
 
-4. **🔍 Searches Topics**
-   - Executes: `java -jar target/cs7is3-search-1.0.0.jar search --index index --topics topics --output runs/student.run --numDocs 1000`
-   - Generates search results for all topics
+### Step 3: Check Results
 
-5. **📈 Evaluates Results**
-   - Generates evaluation data using `tools/generate_qrels.py`
-   - Calculates metrics using `tools/evaluate.py`
-   - Produces `out/standings.csv` and `out/standings.md` with your scores
+1. **View workflow output:**
+   - Go to **Actions** tab → Click the latest workflow run
+   - Check the **"Submit metrics to leaderboard"** step (should show ✅)
+   - View detailed metrics in the workflow summary
 
-6. **📤 Submits to Leaderboard** (if secrets are configured)
-   - Automatically extracts MAP, P@5, P@20, and nDCG@20 scores
-   - Sends them to the leaderboard API
-   - Updates your position on the live leaderboard
+2. **View leaderboard:**
+   - Visit: `https://leaderboard.qrameez.in`
+   - Find your team and members' names with MAP score
 
-## ✅ Step 3: Verify Your Submission
+## 📊 What the Evaluation Does
 
-### Check Workflow Status
-1. Go to **Actions** tab in your repository
-2. Click on the latest workflow run
-3. Look for the **"Submit metrics to leaderboard"** step
-4. If it shows ✅ (green checkmark), your scores were submitted successfully
+The workflow automatically:
 
-### Check the Leaderboard
-1. Visit the leaderboard URL (provided by your instructor)
-2. Look for your team/student name
-3. Your MAP score should appear, sorted from highest to lowest
-
-### View Detailed Results
-In the workflow run, you can see:
-- **Step Summary:** Click on the workflow run → Scroll to the bottom to see a formatted summary
-- **Console Output:** Each step shows detailed logs
-- **Artifacts:** Download `search-engine-evaluation-results` to see CSV and markdown files
+1. **Validates** your project structure (checks for required files)
+2. **Builds** your project (`mvn clean package`)
+3. **Indexes** documents from `Assignment Two/` directory
+4. **Searches** all topics from the `topics` file
+5. **Evaluates** results using `qrels.assignment2.part1`
+6. **Submits** scores to leaderboard (if secrets are configured)
 
 ## 📝 Understanding Your Scores
 
 The evaluation calculates these metrics:
 
-- **MAP (Mean Average Precision):** Primary ranking metric (0.0 to 1.0, higher is better)
-- **P@5 (Precision at 5):** Fraction of top 5 results that are relevant
-- **P@20 (Precision at 20):** Fraction of top 20 results that are relevant
-- **nDCG@20 (Normalized DCG at 20):** Ranking quality considering position
+- **MAP (Mean Average Precision)** - Primary ranking metric (0.0 to 1.0, higher is better)
+- **P@5** - Precision at 5 (fraction of top 5 results that are relevant)
+- **P@20** - Precision at 20 (fraction of top 20 results that are relevant)
+- **nDCG@20** - Normalized DCG at 20 (ranking quality considering position)
 
-The leaderboard displays **MAP score** as the primary ranking metric.
+**The leaderboard ranks by MAP score.**
 
 ## 🔄 Updating Your Score
 
 Every time you:
 - Push new code
-- Make a pull request
+- Create a pull request
 - Manually trigger the workflow
 
-The evaluation runs again and **automatically updates** your leaderboard entry with the latest scores. You don't need to do anything extra!
+Your leaderboard entry **automatically updates** with the latest scores. No extra steps needed!
 
 ## 🐛 Troubleshooting
 
+### Workflow fails at "Build and Test Search Engine"
+
+**Check:**
+- ✅ `pom.xml` exists in root directory
+- ✅ Java source files are in `src/main/java/`
+- ✅ `topics` file exists in root directory
+- ✅ `Assignment Two/` directory exists with dataset files
+
+**Fix:** Add missing files and push again.
+
+### Workflow fails at "Evaluate Results"
+
+**Check:**
+- ✅ `tools/evaluate.py` exists in your repository
+- ✅ `qrels.assignment2.part1` file exists in root directory
+- ✅ `runs/student.run` file was generated (check previous step logs)
+
+**Fix:** Ensure `tools/evaluate.py` is present and the search step completed successfully.
+
 ### "Submit metrics to leaderboard" step is skipped
 
-**Problem:** The step shows as skipped (gray) instead of running.
+**Problem:** Step shows as gray (skipped)
 
 **Solution:**
-- Check that both `LEADERBOARD_API_URL` and `LEADERBOARD_API_TOKEN` secrets are set
-- Go to Settings → Secrets and variables → Actions
-- Verify both secrets exist and have correct values
+- Go to **Settings** → **Secrets and variables** → **Actions**
+- Verify both `LEADERBOARD_API_URL` and `LEADERBOARD_API_TOKEN` are set
+- Ensure URL is exactly: `https://leaderboard.qrameez.in` (no trailing slash)
 
-### Workflow fails before evaluation
+### Scores show 0.0 on leaderboard
 
-**Common causes:**
-- Missing `pom.xml` or Java source files
-- Build errors in your code
-- Missing `topics` file or `Assignment Two` dataset
+**Possible causes:**
+- Search engine didn't produce results
+- `runs/student.run` file is empty
+- Build or search step failed
 
 **Solution:**
-- Check the workflow logs to see which step failed
-- Fix the issue and push again
+- Check workflow logs in the **"Build and Test Search Engine"** step
+- Verify your search engine produces output
+- Ensure evaluation completed successfully
 
 ### Scores not appearing on leaderboard
 
 **Check:**
-1. Did the "Submit metrics to leaderboard" step succeed? (green checkmark)
-2. Are your secrets correct? (verify with instructor)
-3. Wait a few seconds and refresh the leaderboard page
+1. Did "Submit metrics to leaderboard" step succeed? (✅ green checkmark)
+2. Wait 10-30 seconds and refresh the leaderboard page
+3. Verify secrets are correct (ask instructor if unsure)
 
 **If still not working:**
-- Check the workflow logs for error messages
-- Verify the API URL is correct (should be `https://leaderboard.qrameez.in`)
-- Contact your instructor if the issue persists
+- Check workflow logs for error messages
+- Verify API URL in secrets matches: `https://leaderboard.qrameez.in`
+- Contact instructor with workflow run number
 
-### Evaluation runs but shows 0.0 scores
+## 📚 File Structure Reference
 
-**Possible causes:**
-- Search engine didn't produce results
-- `runs/student.run` file is empty or malformed
-- Evaluation script couldn't parse the results
+Your repository should look like this:
 
-**Solution:**
-- Check the "Build and Test Search Engine" step logs
-- Verify your search engine is producing output
-- Check that `runs/student.run` file exists and has content
-
-## 📚 Workflow File Location
-
-Your evaluation workflow is located at:
 ```
-.github/workflows/evaluation.yml
+your-repo/
+├── pom.xml
+├── topics
+├── qrels.assignment2.part1
+├── src/
+│   └── main/
+│       └── java/
+│           ├── App.java
+│           ├── Indexer.java
+│           └── Searcher.java
+├── Assignment Two/
+│   ├── fbis/
+│   ├── fr94/
+│   │   ├── 01/
+│   │   ├── 02/
+│   │   └── ... (subdirectories 03-12)
+│   ├── ft/
+│   │   ├── ft911/
+│   │   ├── ft921/
+│   │   └── ... (other ft subdirectories)
+│   ├── latimes/
+│   └── dtds/
+│       ├── fbisdtd.dtd
+│       ├── fr94dtd
+│       ├── ftdtd
+│       └── latimesdtd.dtd
+├── tools/
+│   └── evaluate.py
+└── .github/
+    └── workflows/
+        └── evaluation.yml
 ```
-
-You can view and modify it in your repository. The workflow is already configured to:
-- Run on push and pull requests
-- Build your project
-- Run evaluation
-- Submit scores automatically (if secrets are set)
 
 ## 🎯 Best Practices
 
-1. **Test Locally First**
-   - Run `mvn clean package` locally to catch build errors
-   - Test your search engine before pushing
+1. **Test locally first:**
+   ```bash
+   mvn clean package
+   ```
+   Fix build errors before pushing.
 
-2. **Check Workflow Logs**
+2. **Check workflow logs:**
    - Always review the Actions tab after pushing
-   - Look for any warnings or errors
+   - Look for warnings or errors in each step
 
-3. **Keep Secrets Secure**
+3. **Keep secrets secure:**
    - Never commit secrets to your code
-   - Never share your `LEADERBOARD_API_TOKEN` publicly
+   - Never share your `LEADERBOARD_API_TOKEN`
 
-4. **Regular Updates**
-   - Push frequently to get updated scores
+4. **Push frequently:**
    - The leaderboard shows your latest successful evaluation
-
-## 📞 Need Help?
-
-If you encounter issues:
-1. Check the troubleshooting section above
-2. Review the workflow logs in the Actions tab
-3. Contact your instructor with:
-   - Your repository URL
-   - The workflow run number
-   - Screenshot of the error (if any)
+   - Push after each improvement to update your score
 
 ## 🔗 Quick Reference
 
-- **Leaderboard URL:** `https://leaderboard.qrameez.in`
-- **Workflow File:** `.github/workflows/evaluation.yml`
-- **Secrets Location:** Settings → Secrets and variables → Actions
+- **Leaderboard:** `https://leaderboard.qrameez.in`
+- **Workflow:** `.github/workflows/evaluation.yml`
+- **Secrets:** Settings → Secrets and variables → Actions
 - **Actions Tab:** `https://github.com/YOUR_USERNAME/YOUR_REPO/actions`
 
 ---
 
 **Good luck with your search engine implementation! 🚀**
-
