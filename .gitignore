@@ -29,3 +29,6 @@ cran/cran.all.1400
 cran/cran.qry
 cran/cranqrel.readme
 cran/qrel_file
+supabase_migration_final_grades.sql
+.gitignore
+scripts/test-final-grades-api.sh
