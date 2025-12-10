@@ -21,3 +21,11 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+cranqrel
+qrel_file
+qrels.assignment2.part1
+qrels.robust2004
+cran/cran.all.1400
+cran/cran.qry
+cran/cranqrel.readme
+cran/qrel_file
