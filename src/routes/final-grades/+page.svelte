@@ -19,7 +19,7 @@
 2) Ensure your code can build and writes \`runs/student.run\` in TREC format (local sanity check optional).  
 3) Commit only your retrieval code/configs; leave workflow/eval scripts untouched.  
 4) Push your repo; CI runs automatically.  
-5) If CI fails, make minimal fixes to your own code and push again. Do not change the workflow/eval scripts; explain any fixes in your commit message.
+5) If CI fails, make minimal fixes to your own code and push again. Do not change the workflow/eval scripts; explain any fixes to the code in your commit message.
 
 ## What you should see after submission
 - In GitHub Actions: the workflow completes with green checks; students only see minimal status.
