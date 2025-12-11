@@ -23,7 +23,10 @@
 	<div class="leaderboard-container">
 		<div class="header-section">
 			<h1>CS7IS3 Search Engine Leaderboard</h1>
-			<a href="/guide" class="guide-link">📖 Student Guide</a>
+			<div class="header-actions">
+				<a href="/guide" class="guide-link">📖 Student Guide</a>
+				<a href="/final-grades" class="guide-link secondary">🎓 Final Grades Instructions</a>
+			</div>
 		</div>
 		<table>
 			<thead>
@@ -89,9 +92,10 @@
 	}
 
 	.header-section {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
+		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
+		justify-content: space-between;
 		margin-bottom: 1.5rem;
 		gap: 1rem;
 	}
@@ -99,15 +103,18 @@
 	h1 {
 		margin: 0;
 		font-size: 1.75rem;
-		text-align: center;
 		color: #0f172a;
 		font-weight: 700;
-		grid-column: 2;
+	}
+
+	.header-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		justify-content: flex-end;
 	}
 
 	.guide-link {
-		grid-column: 3;
-		justify-self: end;
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
@@ -120,6 +127,10 @@
 		font-size: 0.9375rem;
 		transition: background-color 0.2s, transform 0.1s;
 		white-space: nowrap;
+	}
+
+	.guide-link.secondary {
+		background: #0ea5e9;
 	}
 
 	.guide-link:hover {
