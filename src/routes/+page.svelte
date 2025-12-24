@@ -23,9 +23,10 @@
 	<div class="leaderboard-container">
 		<div class="header-section">
 			<h1>CS7IS3 Search Engine Leaderboard</h1>
-			<div class="header-actions">
+			<div class="buttons-grid">
 				<a href="/guide" class="guide-link">📖 Student Guide</a>
 				<a href="/final-grades" class="guide-link secondary">🎓 Final Grades Instructions</a>
+				<a href="/final-grades/grades" class="guide-link final-grades-btn">🏆 Final Grades</a>
 			</div>
 		</div>
 		<table>
@@ -93,11 +94,16 @@
 
 	.header-section {
 		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
+		flex-direction: column;
+		gap: 1.5rem;
 		margin-bottom: 1.5rem;
-		gap: 1rem;
+	}
+
+	.buttons-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.75rem;
+		width: 100%;
 	}
 
 	h1 {
@@ -105,14 +111,9 @@
 		font-size: 1.75rem;
 		color: #0f172a;
 		font-weight: 700;
+		text-align: center;
 	}
 
-	.header-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem;
-		justify-content: flex-end;
-	}
 
 	.guide-link {
 		display: inline-flex;
@@ -131,6 +132,22 @@
 
 	.guide-link.secondary {
 		background: #0ea5e9;
+	}
+
+	.guide-link.final-grades-btn {
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+		padding: 0.875rem 1.75rem;
+		font-size: 1.125rem;
+		font-weight: 600;
+		box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+		border: 2px solid rgba(255, 255, 255, 0.2);
+		justify-content: center;
+	}
+
+	.guide-link.final-grades-btn:hover {
+		background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
 	}
 
 	.guide-link:hover {
@@ -390,20 +407,26 @@
 		}
 
 		.header-section {
-			grid-template-columns: 1fr;
 			margin-bottom: 1.25rem;
 		}
 
 		h1 {
 			font-size: 1.5rem;
-			grid-column: 1;
+			text-align: center;
+		}
+
+		.buttons-grid {
+			grid-template-columns: 1fr;
 		}
 
 		.guide-link {
-			grid-column: 1;
-			justify-self: center;
 			width: 100%;
 			justify-content: center;
+		}
+
+		.guide-link.final-grades-btn {
+			font-size: 1rem;
+			padding: 0.75rem 1.5rem;
 		}
 
 		th,
