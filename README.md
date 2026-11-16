@@ -204,7 +204,27 @@ create table leaderboard (
 | `SUPABASE_URL` | Supabase project URL |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service role (used only on the server/API route) |
 | `SUPABASE_ANON_KEY` | Public anon key (used server-side for read queries) |
-| `LEADERBOARD_API_TOKEN` | Shared secret that student workflows send in the `Authorization: Bearer ...` header |
+| `LEADERBOARD_ADMIN_TOKEN` | Instructor-only token; may submit for any `student_id` |
+| `GRADES_ADMIN_PASSWORD` | Password for `/final-grades/grades` (HTTP Basic auth). If unset, the page returns 503 |
+| `GRADES_ADMIN_USER` | Optional username for that page (default `instructor`) |
+| `ALLOW_SHARED_TOKEN` | Set to `true` only during migration to keep accepting the old class-wide `LEADERBOARD_API_TOKEN` |
+| `LEADERBOARD_API_TOKEN` | Legacy shared token (ignored unless `ALLOW_SHARED_TOKEN=true`) |
+
+### Per-team submission tokens
+
+Each team gets its own token, which can only write that team's row. The server binds the
+row to the token, so a team can't overwrite another team's score even if it edits the payload.
+
+1. Run `supabase/team_tokens.sql` in the Supabase SQL editor (creates `team_tokens`, enables RLS on it and on `final_grades`).
+2. Generate tokens, using the same `student_id` values your workflow submits:
+   ```bash
+   node scripts/generate-team-tokens.js --file student-ids.txt
+   ```
+3. Run the generated `team-tokens.sql` in Supabase.
+4. Give each team **only its own** token from `team-tokens.private.csv` (they store it as the `LEADERBOARD_API_TOKEN` secret), then delete the CSV.
+5. To revoke a token: `update team_tokens set active = false where student_id = '...';`
+
+Both generated files are gitignored. If you previously added an anon `select` policy on `final_grades`, drop it.
 
 **⚠️ Important:** After setting environment variables, make sure to **disable Vercel Deployment Protection** for your API routes:
 
@@ -242,7 +262,7 @@ Add this step after metrics are generated (replace the env values per repo):
 
 Each student repo only needs:
 - `LEADERBOARD_API_URL` (e.g., `https://leaderboard.qrameez.in`)
-- `LEADERBOARD_API_TOKEN` (shared secret you provide)
+- `LEADERBOARD_API_TOKEN` (that team's own token; see *Per-team submission tokens*)
 
 No Supabase keys are shared with students.
 

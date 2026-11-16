@@ -62,7 +62,7 @@ To submit scores to the leaderboard, add these secrets to your repository:
    
    **Secret 2:**
    - **Name:** `LEADERBOARD_API_TOKEN`
-   - **Value:** (provided by your instructor)
+   - **Value:** your team's personal token (provided by your instructor; it only works for your team)
    
    **Secret 3 (Optional):**
    - **Name:** `TEAM_NAME`

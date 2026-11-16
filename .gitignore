@@ -32,3 +32,9 @@ cran/qrel_file
 supabase_migration_final_grades.sql
 .gitignore
 scripts/test-final-grades-api.sh
+
+# Secrets / keys
+*.pem
+*.key
+team-tokens.private.csv
+team-tokens.sql
