@@ -34,6 +34,8 @@ export const leaderboardSchema = z.object({
 	...baseFields,
 	p5: score.optional(),
 	p20: score.optional(),
+	ndcg20: score.optional(),
+	/** Old name for ndcg20, still accepted from older clients. */
 	ndcg: score.optional()
 });
 

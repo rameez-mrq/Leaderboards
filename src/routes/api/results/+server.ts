@@ -10,7 +10,7 @@ export const POST: RequestHandler = createIngestHandler({
 		map_score: p.map,
 		p5: p.p5,
 		p20: p.p20,
-		ndcg20: p.ndcg,
+		ndcg20: p.ndcg20 ?? p.ndcg,
 		run_id: p.run_id,
 		repo: p.repo,
 		last_commit: p.last_commit
