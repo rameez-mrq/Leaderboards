@@ -43,7 +43,15 @@
 		{#if form?.success}
 			<div class="success" role="status">
 				<h2>Team "{form.team}" is registered</h2>
-				<p>Your team's private repository, <code>2026-team-{form.slug}</code>, will be created from the starter pack and each member will get a GitHub invitation by email.</p>
+				{#if form.repo}
+					<p>
+						Your team's private repository is ready:
+						<a href={`https://github.com/${form.repo}`} target="_blank" rel="noopener noreferrer"><code>{form.repo}</code></a>.
+						Each member has been sent a GitHub invitation.
+					</p>
+				{:else}
+					<p>Your team's private repository, <code>2026-team-{form.slug}</code>, will be created from the starter pack and each member will get a GitHub invitation by email.</p>
+				{/if}
 				<ol>
 					<li>Accept the invitation from <strong>ca-assignments</strong> when it arrives (check GitHub notifications too).</li>
 					<li>Clone your repository and read its README.</li>

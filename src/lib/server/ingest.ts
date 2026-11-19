@@ -62,6 +62,22 @@ export const finalGradesSchema = z.object({
 	avg_docs_per_topic: nonNegative.optional()
 });
 
+/** Registered team name and members for a repository, if it belongs to a signed-up team. */
+async function registeredTeam(repo: unknown): Promise<{ team: string; members: string } | null> {
+	if (typeof repo !== 'string' || !repo) return null;
+	try {
+		const { data } = await supabaseAdmin
+			.from('teams')
+			.select('name, team_members(full_name)')
+			.eq('repo', repo)
+			.maybeSingle<{ name: string; team_members: { full_name: string }[] }>();
+		if (!data) return null;
+		return { team: data.name, members: data.team_members.map((m) => m.full_name).join(', ') };
+	} catch {
+		return null; // never block a score because of the lookup
+	}
+}
+
 type Options<S extends z.ZodType> = {
 	table: 'leaderboard' | 'final_grades';
 	schema: S;
@@ -110,9 +126,16 @@ export function createIngestHandler<S extends z.ZodType<{ student_id?: string }>
 			return json({ error: 'student_id is required' }, { status: 400 });
 		}
 
+		const row: Record<string, unknown> = { ...opts.toRow(payload) };
+		const registered = await registeredTeam(row.repo);
+		if (registered) {
+			row.team = registered.team;
+			row.student_name = registered.members;
+		}
+
 		const { error } = await supabaseAdmin.from(opts.table).upsert(
 			{
-				...opts.toRow(payload),
+				...row,
 				student_id: studentId,
 				updated_at: new Date().toISOString()
 			},

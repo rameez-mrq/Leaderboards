@@ -44,6 +44,6 @@ export const actions: Actions = {
 		if (!result.ok) {
 			return fail(400, { team, size, members, field: result.field, error: result.error });
 		}
-		return { success: true, team: result.team, slug: result.slug, count: size };
+		return { success: true, team: result.team, slug: result.slug, repo: result.repo ?? null, count: size };
 	}
 };
