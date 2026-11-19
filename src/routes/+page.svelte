@@ -24,6 +24,7 @@
 		<div class="header-section">
 			<h1>CS7IS3 Search Engine Leaderboard</h1>
 			<div class="buttons-grid">
+				<a href="/register" class="guide-link register-btn">👥 Register your team</a>
 				<a href="/guide" class="guide-link">📖 Student Guide</a>
 				<a href="/final-grades" class="guide-link secondary">🎓 Final Grades Instructions</a>
 				<a href="/final-grades/grades" class="guide-link final-grades-btn">🏆 Final Grades</a>
@@ -101,9 +102,14 @@
 
 	.buttons-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 		gap: 0.75rem;
 		width: 100%;
+	}
+
+	.guide-link.register-btn {
+		background: #059669;
+		color: #fff;
 	}
 
 	h1 {
