@@ -201,10 +201,42 @@ create table leaderboard (
 
 | Variable | Description |
 | --- | --- |
-| `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Service role (used only on the server/API route) |
-| `SUPABASE_ANON_KEY` | Public anon key (used server-side for read queries) |
-| `LEADERBOARD_API_TOKEN` | Shared secret that student workflows send in the `Authorization: Bearer ...` header |
+| `SUPABASE_URL` | Supabase project URL (or `NEXT_PUBLIC_SUPABASE_URL`, as set by the Vercel Supabase integration) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key, server only (or `SUPABASE_SECRET_KEY`) |
+| `SUPABASE_ANON_KEY` | Public key for read queries (or `SUPABASE_PUBLISHABLE_KEY` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) |
+| `LEADERBOARD_ADMIN_TOKEN` | Instructor-only token; may submit for any `student_id` |
+| `GRADES_ADMIN_PASSWORD` | Password for `/final-grades/grades` (HTTP Basic auth). If unset, the page returns 503 |
+| `GRADES_ADMIN_USER` | Optional username for that page (default `instructor`) |
+| `ALLOW_SHARED_TOKEN` | Set to `true` only during migration to keep accepting the old class-wide `LEADERBOARD_API_TOKEN` |
+| `LEADERBOARD_API_TOKEN` | Legacy shared token (ignored unless `ALLOW_SHARED_TOKEN=true`) |
+| `TEAM_MIN_MEMBERS` / `TEAM_MAX_MEMBERS` | Team size for `/register` (default 3 and 6) |
+| `REGISTRATION_DEADLINE` | Optional ISO 8601 time after which `/register` closes, e.g. `2026-12-05T17:00:00Z`. Leave unset to keep registration open |
+| `REGISTRATION_OPEN` | Set to `false` to close registration immediately |
+| `REGISTRATION_EMAIL_DOMAIN` | Required member email domain (default `tcd.ie`) |
+
+### Team registration
+
+Students register at `/register`: a team name plus each member's full name, Trinity email and GitHub username. The site checks team size, the email domain, that each GitHub account exists, and that nobody is in two teams, then saves the team as `registered`. Team repositories are created separately (by the GitHub App, once it's set up).
+
+1. Run `supabase/teams.sql` in the Supabase SQL editor.
+2. Optional: load the class list into the `roster` table (`tcd_email`, `full_name`). When it has any rows, only those emails can register.
+3. Instructors see every team at `/admin/teams`, and can download `/admin/teams.csv`. Both use the `GRADES_ADMIN_PASSWORD` login.
+
+### Per-team submission tokens
+
+Each team gets its own token, which can only write that team's row. The server binds the
+row to the token, so a team can't overwrite another team's score even if it edits the payload.
+
+1. Run `supabase/team_tokens.sql` in the Supabase SQL editor (creates `team_tokens`, enables RLS on it and on `final_grades`).
+2. Generate tokens, using the same `student_id` values your workflow submits:
+   ```bash
+   node scripts/generate-team-tokens.js --file student-ids.txt
+   ```
+3. Run the generated `team-tokens.sql` in Supabase.
+4. Give each team **only its own** token from `team-tokens.private.csv` (they store it as the `LEADERBOARD_API_TOKEN` secret), then delete the CSV.
+5. To revoke a token: `update team_tokens set active = false where student_id = '...';`
+
+Both generated files are gitignored. If you previously added an anon `select` policy on `final_grades`, drop it.
 
 **⚠️ Important:** After setting environment variables, make sure to **disable Vercel Deployment Protection** for your API routes:
 
@@ -242,7 +274,7 @@ Add this step after metrics are generated (replace the env values per repo):
 
 Each student repo only needs:
 - `LEADERBOARD_API_URL` (e.g., `https://leaderboard.qrameez.in`)
-- `LEADERBOARD_API_TOKEN` (shared secret you provide)
+- `LEADERBOARD_API_TOKEN` (that team's own token; see *Per-team submission tokens*)
 
 No Supabase keys are shared with students.
 

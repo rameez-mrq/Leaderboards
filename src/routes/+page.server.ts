@@ -31,10 +31,16 @@ const formatRelativeTime = (isoString: string | null) => {
 };
 
 export const load: PageServerLoad = async () => {
-	const { data, error } = await supabaseServerClient
-		.from('leaderboard')
-		.select('*')
-		.order('map_score', { ascending: false });
+	let data: unknown[] | null = null;
+	let error: unknown = null;
+	try {
+		({ data, error } = await supabaseServerClient
+			.from('leaderboard')
+			.select('*')
+			.order('map_score', { ascending: false }));
+	} catch (e) {
+		error = e; // e.g. Supabase not configured: show an empty board, not an error page
+	}
 
 	if (error) {
 		console.error('Failed to fetch leaderboard from Supabase', error);
