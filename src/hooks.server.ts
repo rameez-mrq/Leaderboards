@@ -2,8 +2,8 @@ import type { Handle } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { safeEqual } from '$lib/server/auth';
 
-// Routes that expose unpublished grades. Protected with HTTP Basic auth.
-const PROTECTED_PREFIXES = ['/final-grades/grades'];
+// Instructor-only routes (unpublished grades, team registrations). HTTP Basic auth.
+const PROTECTED_PREFIXES = ['/final-grades/grades', '/admin'];
 
 const isProtected = (pathname: string) =>
 	PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));

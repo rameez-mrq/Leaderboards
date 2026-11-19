@@ -209,6 +209,18 @@ create table leaderboard (
 | `GRADES_ADMIN_USER` | Optional username for that page (default `instructor`) |
 | `ALLOW_SHARED_TOKEN` | Set to `true` only during migration to keep accepting the old class-wide `LEADERBOARD_API_TOKEN` |
 | `LEADERBOARD_API_TOKEN` | Legacy shared token (ignored unless `ALLOW_SHARED_TOKEN=true`) |
+| `TEAM_MIN_MEMBERS` / `TEAM_MAX_MEMBERS` | Team size for `/register` (default 3 and 6) |
+| `REGISTRATION_DEADLINE` | Optional ISO 8601 time after which `/register` closes, e.g. `2026-12-05T17:00:00Z`. Leave unset to keep registration open |
+| `REGISTRATION_OPEN` | Set to `false` to close registration immediately |
+| `REGISTRATION_EMAIL_DOMAIN` | Required member email domain (default `tcd.ie`) |
+
+### Team registration
+
+Students register at `/register`: a team name plus each member's full name, Trinity email and GitHub username. The site checks team size, the email domain, that each GitHub account exists, and that nobody is in two teams, then saves the team as `registered`. Team repositories are created separately (by the GitHub App, once it's set up).
+
+1. Run `supabase/teams.sql` in the Supabase SQL editor.
+2. Optional: load the class list into the `roster` table (`tcd_email`, `full_name`). When it has any rows, only those emails can register.
+3. Instructors see every team at `/admin/teams`, and can download `/admin/teams.csv`. Both use the `GRADES_ADMIN_PASSWORD` login.
 
 ### Per-team submission tokens
 
