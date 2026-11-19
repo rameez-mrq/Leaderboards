@@ -201,9 +201,9 @@ create table leaderboard (
 
 | Variable | Description |
 | --- | --- |
-| `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Service role (used only on the server/API route) |
-| `SUPABASE_ANON_KEY` | Public anon key (used server-side for read queries) |
+| `SUPABASE_URL` | Supabase project URL (or `NEXT_PUBLIC_SUPABASE_URL`, as set by the Vercel Supabase integration) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key, server only (or `SUPABASE_SECRET_KEY`) |
+| `SUPABASE_ANON_KEY` | Public key for read queries (or `SUPABASE_PUBLISHABLE_KEY` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) |
 | `LEADERBOARD_ADMIN_TOKEN` | Instructor-only token; may submit for any `student_id` |
 | `GRADES_ADMIN_PASSWORD` | Password for `/final-grades/grades` (HTTP Basic auth). If unset, the page returns 503 |
 | `GRADES_ADMIN_USER` | Optional username for that page (default `instructor`) |
