@@ -26,7 +26,7 @@
 			<div class="buttons-grid">
 				<a href="/register" class="guide-link register-btn">👥 Register your team</a>
 				<a href="/guide" class="guide-link">📖 Student Guide</a>
-				<a href="/final-grades" class="guide-link secondary">🎓 Final Grades Instructions</a>
+				<a href="/final-grades" class="guide-link secondary">🎓 Final submission</a>
 				<a href="/final-grades/grades" class="guide-link final-grades-btn">🏆 Final Grades</a>
 			</div>
 		</div>
