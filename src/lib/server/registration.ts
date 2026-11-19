@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { env } from '$env/dynamic/private';
 import { supabaseAdmin } from '$lib/server/supabase';
+import { provisionTeam } from '$lib/server/provision';
 
 /** Settings (Vercel environment variables), with defaults. */
 export function registrationSettings() {
@@ -53,7 +54,7 @@ function memberSchema(domain: string) {
 
 export type Member = { full_name: string; tcd_email: string; github_username: string };
 export type RegistrationResult =
-	| { ok: true; team: string; slug: string }
+	| { ok: true; team: string; slug: string; repo?: string }
 	| { ok: false; error: string; field?: string };
 
 /** Checks a GitHub username exists. Unknown (rate limit, network) counts as OK. */
@@ -140,7 +141,7 @@ export async function registerTeam(teamName: string, rawMembers: Member[]): Prom
 		}
 	}
 
-	const { error } = await supabaseAdmin.rpc('register_team', {
+	const { data: teamId, error } = await supabaseAdmin.rpc('register_team', {
 		p_name: name,
 		p_slug: slug,
 		p_members: members
@@ -156,5 +157,13 @@ export async function registerTeam(teamName: string, rawMembers: Member[]): Prom
 		return { ok: false, error: "Couldn't save your registration. Try again in a minute." };
 	}
 
-	return { ok: true, team: name, slug };
+	// Create the repository straight away when the GitHub App is set up. If that
+	// fails, the registration still stands and an instructor can retry from /admin/teams.
+	let repo: string | undefined;
+	if (typeof teamId === 'string') {
+		const result = await provisionTeam(teamId);
+		if (result.ok) repo = result.repo;
+	}
+
+	return { ok: true, team: name, slug, repo };
 }

@@ -1,5 +1,8 @@
 <script lang="ts">
-	let { data } = $props();
+	import { enhance } from '$app/forms';
+
+	let { data, form } = $props();
+	let working = $state(false);
 	const members = $derived(data.teams.reduce((n, t) => n + t.team_members.length, 0));
 	const fmt = (iso: string) =>
 		new Date(iso).toLocaleString('en-IE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Dublin' });
@@ -17,8 +20,42 @@
 				<h1>Registered teams</h1>
 				<p class="muted">{data.teams.length} teams, {members} students</p>
 			</div>
-			<a class="button" href="/admin/teams.csv" download>Download CSV</a>
+			<div class="actions">
+				{#if data.appConfigured}
+					<form
+						method="POST"
+						action="?/provision"
+						use:enhance={() => {
+							working = true;
+							return async ({ update }) => {
+								await update();
+								working = false;
+							};
+						}}
+					>
+						<button class="button primary" disabled={working}>
+							{working ? 'Creating…' : 'Create missing repositories'}
+						</button>
+					</form>
+				{/if}
+				<a class="button" href="/admin/teams.csv" download>Download CSV</a>
+			</div>
 		</div>
+
+		{#if form?.message}
+			<div class="notice" role="status">
+				{form.message}
+				{#each (form.provisioned ?? []).filter((r) => !r.ok) as r (r.teamId)}
+					<div class="small">⚠ {r.detail}</div>
+				{/each}
+			</div>
+		{/if}
+		{#if !data.appConfigured}
+			<p class="muted small">
+				Repositories aren't created automatically yet: add the GitHub App settings in Vercel
+				(<code>GRADER_APP_ID</code>, <code>GRADER_APP_PRIVATE_KEY</code>).
+			</p>
+		{/if}
 
 		{#if data.error}
 			<div class="error" role="alert">{data.error}</div>
@@ -95,6 +132,34 @@
 		border-radius: 8px;
 		padding: 0.45rem 0.9rem;
 		font-size: 0.9rem;
+	}
+	.actions {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+	.button.primary {
+		background: #4f46e5;
+		color: #fff;
+		border-color: #4f46e5;
+		font: inherit;
+		cursor: pointer;
+	}
+	.button.primary:disabled {
+		opacity: 0.7;
+		cursor: progress;
+	}
+	.notice {
+		background: #eef2ff;
+		color: #312e81;
+		padding: 0.75rem 1rem;
+		border-radius: 8px;
+		margin-top: 1rem;
+	}
+	code {
+		background: rgba(15, 23, 42, 0.06);
+		padding: 0.1rem 0.3rem;
+		border-radius: 4px;
 	}
 	.table-wrap {
 		overflow-x: auto;

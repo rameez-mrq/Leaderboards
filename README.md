@@ -84,10 +84,14 @@ In a new Supabase project, open **SQL Editor** and run all of `supabase/setup.sq
 | `REGISTRATION_DEADLINE` | Optional ISO 8601 time after which `/register` closes, e.g. `2026-12-05T17:00:00Z`. Leave unset to keep registration open |
 | `REGISTRATION_OPEN` | Set to `false` to close registration immediately |
 | `REGISTRATION_EMAIL_DOMAIN` | Required member email domain (default `tcd.ie`) |
+| `GRADER_APP_ID` | ID of the `cs7is3-grader-2026` GitHub App (enables repo creation and push-triggered grading) |
+| `GRADER_APP_PRIVATE_KEY` | The App's private key (PEM; pasting with `\n` escapes also works). Server only |
+| `GITHUB_WEBHOOK_SECRET` | The App's webhook secret; `/api/github/webhook` rejects requests without a valid signature |
+| `GITHUB_ORG` / `GRADER_REPO` / `TEMPLATE_REPO` / `TEAM_REPO_PREFIX` | Optional overrides (defaults `ca-assignments`, `ca-assignments/grader`, `ca-assignments/starter-pack`, `2026-team-`) |
 
 ### Team registration
 
-Students register at `/register`: a team name plus each member's full name, Trinity email and GitHub username. The site checks team size, the email domain, that each GitHub account exists, and that nobody is in two teams, then saves the team as `registered`. Team repositories are created separately (by the GitHub App, once it's set up).
+Students register at `/register`: a team name plus each member's full name, Trinity email and GitHub username. The site checks team size, the email domain, that each GitHub account exists, and that nobody is in two teams, then saves the team as `registered`. When the GitHub App is configured, the team's private repository `2026-team-<slug>` is created from `starter-pack` straight away and every member is invited with write access; otherwise the team stays `registered`. **Create missing repositories** on `/admin/teams` creates or retries any that are still missing.
 
 1. Run `supabase/teams.sql` in the Supabase SQL editor.
 2. Optional: load the class list into the `roster` table (`tcd_email`, `full_name`). When it has any rows, only those emails can register.
@@ -120,6 +124,8 @@ Both generated files are gitignored. If you previously added an anon `select` po
 Without this, all API requests will be blocked by Vercel's authentication layer before reaching your code.
 
 ### 3. Where scores come from
+
+Every push to `main` in a team repository reaches `/api/github/webhook` (GitHub App event, signature-checked), which starts the grader workflow for that commit.
 
 Teams do not submit scores themselves. The grader (`ca-assignments/grader`) runs on every push to a team repository's `main` branch, scores the run with `tools/evaluate.py`, and posts to `/api/results` (practice) or `/api/final_grades` (final) with `LEADERBOARD_ADMIN_TOKEN`. No Supabase keys or tokens are shared with students.
 
