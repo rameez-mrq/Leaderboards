@@ -1,53 +1,12 @@
 <script lang="ts">
-	import { marked } from 'marked';
+	import source from '$lib/content/final-submission.md?raw';
+	import { renderMarkdown } from '$lib/markdown';
 
-	const markdownContent = `# CA Part 2 Grading
-
-## Required files (place in your repo)
-- ✅ \`.github/workflows/classroom.yml\`
-  - 📥 [Download classroom.yml](https://drive.google.com/file/d/1RomLbE8wmbW_k39sxZp5AkEM59Y_4mwf/view?usp=sharing)
-- ✅ \`tools/evaluate_final.py\`
-  - 📥 [Download evaluate_final.py](https://drive.google.com/file/d/1KrNNHaI9laYyDotEcb7_llb0J-v2g9zt/view?usp=sharing)
-- Put them exactly in \`.github/workflows/\` and \`tools/\` respectively. Do not edit these files.
-
-## What the workflow does
-- On push/CI, \`.github/workflows/classroom.yml\` runs.
-- It downloads assets on the runner (topics/qrels/dataset), builds your code, runs search to produce \`runs/student.run\`, evaluates with \`tools/evaluate_final.py\`, and submits metrics. Only minimal status is shown.
-
-## How to submit
-1) Add the provided files to the correct paths (\`.github/workflows/classroom.yml\`, \`tools/evaluate_final.py\`).  
-2) Ensure your code can build and writes \`runs/student.run\` in TREC format (local sanity check optional).  
-3) Commit only your retrieval code/configs; leave workflow/eval scripts untouched.  
-4) Push your repo; CI runs automatically.  
-5) If CI fails, make minimal fixes to your own code and push again. Explain the fixes to the code in your commit message precisely.
-
-## What you should expect after submission
-- In GitHub Actions: the workflow completes with green checks; you only see minimal status.
-- Scores/metrics are submitted to the final grades system; detailed metrics are not shown to you until published.
-
-## Rules
-- Do not modify \`classroom.yml\` or \`tools/evaluate_final.py\`.  
-- Do not change your retrieval/search implementation or any submitted code unless explicitly told to resubmit.  
-- Keep repo structure unchanged; \`runs/student.run\` must be produced in TREC format.  
-- No local downloads of topics/qrels/dataset are needed—handled on the runner.  
-- Do not alter the submitted repository after pushing (unless instructed to resubmit).
-
-## Contact
-- Rameez Qureshi — moquresh@tcd.ie`;
-
-	// Basic markdown parse
-	const parsed = marked.parse(markdownContent);
-	let htmlContent = typeof parsed === 'string' ? parsed : String(parsed);
-
-	// Add target="_blank" to external links (none here, but keep consistent)
-	htmlContent = htmlContent.replace(
-		/<a href="(https?:\/\/[^"]+)"/g,
-		'<a href="$1" target="_blank" rel="noopener noreferrer"'
-	);
+	const htmlContent = renderMarkdown(source);
 </script>
 
 <svelte:head>
-	<title>CA Part 2 Grading - CS7IS3 Leaderboard</title>
+	<title>Final submission - CS7IS3</title>
 </svelte:head>
 
 <main class="guide-page">
@@ -102,6 +61,15 @@
 		color: #334155;
 		line-height: 1.7;
 		font-size: 1.0625rem;
+	}
+
+	.guide-content :global(li:has(> input[type='checkbox'])) {
+		list-style: none;
+		margin-left: -1.25rem;
+	}
+
+	.guide-content :global(li > input[type='checkbox']) {
+		margin-right: 0.5rem;
 	}
 
 	.guide-content :global(h1) {

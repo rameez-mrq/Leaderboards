@@ -4,13 +4,12 @@ A modern leaderboard application built with SvelteKit to display student MAP sco
 
 ## 📚 For Students
 
-**👉 [See STUDENT-GUIDE.md](./STUDENT-GUIDE.md) for complete instructions on:**
-- Setting up GitHub secrets for leaderboard submission
-- Running the evaluation workflow
-- Understanding how scores are automatically submitted
-- Troubleshooting common issues
+Student instructions are on the site:
 
-The guide covers everything you need to get your scores on the leaderboard!
+- **[Student Guide](https://leaderboard.qrameez.in/guide)**: registering a team, the starter pack, local testing, pushing to the leaderboard, limits and rules
+- **[Final submission](https://leaderboard.qrameez.in/final-grades)**: what is graded at the deadline and how
+
+Their text lives in `src/lib/content/guide.md` and `src/lib/content/final-submission.md`; edit those files to change the pages.
 
 ## Development
 
